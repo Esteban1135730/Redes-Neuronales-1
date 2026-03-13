@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Sentimientos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { width: 80%; max-width: 800px; margin-top: 20px; text-align: center; }
+        .btn { margin: 10px; padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px; display: inline-block; }
+        .back-link { background: #007bff; }
+        .download-link { background: #28a745; }
+        img { max-width: 100%; height: auto; border: 1px solid #ddd; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Análisis Finalizado</h1>
+    
+    <div class="container">
+        <h3>Distribución de Sentimientos</h3>
+        <canvas id="sentimentChart"></canvas>
+    </div>
+
+    <div class="container">
+        <h3>Palabras más frecuentes</h3>
+        <img src="data:image/png;base64,{{ wordcloud }}" alt="Nube de palabras">
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a href="/" class="btn back-link">Analizar otro archivo</a>
+        <a href="/download" class="btn download-link">Descargar Excel Clasificado</a>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('sentimentChart').getContext('2d');
+        const labels = {{ stats.keys() | list | tojson }};
+        const data = {{ stats.values() | list | tojson }};
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Cantidad',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/project-1cdd72ba-a51a-4874-9e9/analisis-app', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/project-1cdd72ba-a51a-4874-9e9/analisis-app']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run', 'deploy', 'analisissentimientosapp',
+        '--image', 'gcr.io/project-1cdd72ba-a51a-4874-9e9/analisis-app',
+        '--region', 'europe-west1',
+        '--platform', 'managed',
+        '--allow-unauthenticated',
+        '--port', '8080',
+        '--timeout', '600' # Aumentamos a 10 minutos de espera
+      ]
+
+# AGREGA ESTO AL FINAL DE TU ARCHIVO YAML:
+options:
+  logging: CLOUD_LOGGING_ONLY

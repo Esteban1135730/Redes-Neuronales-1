@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizador de Sentimientos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), transparent 60%),
+                radial-gradient(circle at bottom right, rgba(251, 113, 133, 0.32), transparent 60%),
+                linear-gradient(135deg, #020617, #020617 40%, #020617 60%, #020617);
+            color: #e5e7eb;
+        }
+        .card {
+            position: relative;
+            background: radial-gradient(circle at top, #020617, #020617 55%, #020617);
+            border-radius: 22px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow:
+                0 24px 80px rgba(15, 23, 42, 0.8),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+            overflow: hidden;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            padding: 1px;
+            background: conic-gradient(
+                from 160deg,
+                #22c55e,
+                #22c55e,
+                #38bdf8,
+                #6366f1,
+                #a855f7,
+                #ec4899,
+                #f97316,
+                #22c55e
+            );
+            -webkit-mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+            opacity: 0.75;
+        }
+        .card-inner {
+            position: relative;
+            z-index: 1;
+        }
+        .title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.03em;
+        }
+        .title span {
+            background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+        .hint {
+            font-size: 0.82rem;
+            color: #9ca3af;
+            margin-top: 6px;
+        }
+        form {
+            margin-top: 10px;
+        }
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 18px;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px dashed rgba(148, 163, 184, 0.8);
+            background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), rgba(15, 23, 42, 0.95));
+            color: #e5e7eb;
+            cursor: pointer;
+        }
+        input[type="file"]::-webkit-file-upload-button {
+            background: #1d4ed8;
+            border: none;
+            color: #e5e7eb;
+            padding: 8px 14px;
+            margin-right: 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        input[type="file"]::file-selector-button {
+            background: #1d4ed8;
+            border: none;
+            color: #e5e7eb;
+            padding: 8px 14px;
+            margin-right: 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(120deg, #22c55e, #16a34a, #22c55e);
+            color: #052e16;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+            box-shadow: 0 14px 30px rgba(22, 163, 74, 0.45);
+        }
+        button[type="submit"]:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+        }
+        button[type="submit"]:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 18px rgba(22, 163, 74, 0.38);
+        }
+        .footer {
+            margin-top: 18px;
+            font-size: 0.82rem;
+            color: #9ca3af;
+        }
+        .footer strong {
+            color: #e5e7eb;
+        }
+        @media (max-width: 600px) {
+            .card {
+                margin: 16px;
+                padding: 24px 20px;
+            }
+            .title {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="title">Analizador de Sentimientos</h1>
+        <p class="subtitle">
+            Sube un archivo <strong>Excel (.xlsx)</strong> con una columna llamada
+            <strong>comentario</strong> para clasificar cada texto.
+        </p>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" name="file" accept=".xlsx" required>
+                <p class="hint">
+                    Ejemplo: <em>comentario</em> = "El servicio fue excelente, muy recomendado".
+                </p>
+            </div>
+            <button type="submit">Analizar archivo</button>
+        </form>
+        <p class="footer">
+            Los resultados mostrarán el conteo de sentimientos y una nube de palabras generada
+            a partir de los comentarios procesados.
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+flask
+pandas
+openpyxl
+transformers
+torch
+matplotlib
+seaborn
+wordcloud
